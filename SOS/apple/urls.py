@@ -20,9 +20,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('test/', views.test_sos),
-    path('ors/',include('ors.urls')),
-    path('apple/', include('apple.urls')),
-    path('mango/', include('mango.urls')),
+
+    path('apple/', views.test_apple),
 ]

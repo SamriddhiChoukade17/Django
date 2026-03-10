@@ -2,4 +2,6 @@ from django.http import HttpResponse
 
 
 def test_ors(request):
-    return HttpResponse("<h1>Django Testing ors<h1/>")
+    return HttpResponse("<h1>Testing ORS<h1/>")
+
+
