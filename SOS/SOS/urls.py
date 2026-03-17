@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', views.test_sos),
     path('', include('ors.urls')),
-    #path('ors/', include('ors.urls')),
+    path('ors/', include('ors.urls')),
     path('apple/', include('apple.urls')),
     path('mango/', include('mango.urls')),
 ]

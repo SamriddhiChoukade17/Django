@@ -49,14 +49,45 @@ def user_signup(request):
     #return render(request, "registration.html")
 
 def user_signin(request):
+    # if request.method == "POST":
+    #     if request.POST.get('operation')=="signIn":
+    #         print(request.POST.get('loginId'))
+    #         print(request.POST.get('password'))
+    #     if request.POST.get('operation')=="signUp":
+    #         #ye niche wala "/signup/" bad me pag ko directly access krne ke liye h. link se directly access hoga and we don't be needing to type "*ors/signup"
+    #         return redirect("/signup/")
+    #         #return redirect("ors/signup/")
+    #
+    # return render(request, 'login2.html')
+
+
+    message = ''
     if request.method == "POST":
-        if request.POST.get('operation')=="signIn":
-            print(request.POST.get('loginId'))
-            print(request.POST.get('password'))
-        if request.POST.get('operation')=="signUp":
-            #ye niche wala "/signup/" bad me pag ko directly access krne ke liye h. link se directly access hoga and we don't be needing to type "*ors/signup"
+        if request.POST.get('operation') == "signIn":
+            loginId = request.POST.get('loginId')
+            password = request.POST.get('password')
+            service = UserService()
+            user_data = service.auth(loginId, password)
+            if len(user_data) != 0:
+                request.session['firstName'] = user_data[0].get('firstName')
+                return redirect('/')
+                # return render(request, 'welcome.html', {'firstName': user_data[0].get('firstName')})
+            else:
+                message = 'Login ID & Password Invalid'
+        if request.POST.get('operation') == "signUp":
             return redirect("/signup/")
-            #return redirect("ors/signup/")
+    return render(request, 'login2.html', {'message': message})
 
-    return render(request, 'login2.html')
 
+def logout(request):
+    request.session['firstName'] = None
+    return redirect('/signin')
+
+
+def test_list(request):
+    list = [
+        {"id": 1, "firstName": "abc", "lastName": "aaa", "email": "abc@gmail.com", "password": "12345"},
+        {"id": 2, "firstName": "xyz", "lastName": "aaa", "email": "abc@gmail.com", "password": "12345"},
+        {"id": 3, "firstName": "pqr", "lastName": "aaa", "email": "abc@gmail.com", "password": "12345"}
+    ]
+    return render(request, "testlist.html", {"list": list})

@@ -24,8 +24,10 @@ urlpatterns = [
 
     path('test/', views.test_ors),
     path('', views.welcome),
-    #path('welcome/', views.welcome),
+    path('welcome/', views.welcome),
     #path('registration/', views.user_signup_test),
     path('signin/', views.user_signin),
     path('signup/', views.user_signup),
+    path('logout/', views.logout),
+    path('testlist/', views.test_list),
 ]

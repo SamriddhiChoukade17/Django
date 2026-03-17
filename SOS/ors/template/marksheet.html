@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marksheet</title>
+</head>
+<body>
+<div align="center">
+    <h1>Student Marksheet Form</h1>
+</div>
+
+<hr>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <table align="center" border="1" cellpadding="10">
+
+        <tr>
+            <td>Full Name:</td>
+            <td><input type="text" name="fullName" required></td>
+        </tr>
+
+        <tr>
+            <td>Roll Number:</td>
+            <td><input type="number" name="rollNo" required></td>
+        </tr>
+
+        <tr>
+            <td>Physics Marks:</td>
+            <td><input type="number" name="physics" required></td>
+        </tr>
+
+        <tr>
+            <td>Chemistry Marks:</td>
+            <td><input type="number" name="chemistry" required></td>
+        </tr>
+
+        <tr>
+            <td>Maths Marks:</td>
+            <td><input type="number" name="maths" required></td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Clear">
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+<hr>
+
+    <div align="center"></div>
+    <h3>Enter student marks carefully!</h3>
+
+
+</body>
+</html>
