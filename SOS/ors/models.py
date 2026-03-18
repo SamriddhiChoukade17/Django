@@ -15,11 +15,11 @@ class User(models.Model):
 
 class Marksheet(models.Model):
     fullName = models.CharField(max_length = 50)
-    rollNo = models.IntegerField(max_length = 50)
-    physics = models.IntegerField(max_length = 50)
-    chemistry = models.IntegerField(max_length=50)
-    maths = models.IntegerField(max_length=50)
-    #address = models.CharField(max_length=50)
+    rollNo = models.IntegerField()
+    physics = models.IntegerField()
+    chemistry = models.IntegerField()
+    maths = models.IntegerField()
+
 
     class Meta:
         db_table  = 'sos_marksheet'

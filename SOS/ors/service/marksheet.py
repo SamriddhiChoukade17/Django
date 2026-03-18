@@ -1,12 +1,12 @@
 from django.db import connection
 
 
-class UserService:
+class MarksheetService:
 
     def nextPk(self):
         pk = 0
         with connection.cursor() as cursor:
-            sql = "select max(id) from sos_user"
+            sql = "select max(id) from sos_marksheet"
             cursor.execute(sql)
             result = cursor.fetchall()
         connection.close()
@@ -23,8 +23,8 @@ class UserService:
         m = data['maths']
 
 
-        sql = "insert into sos_user values((%s), (%s), (%s), (%s), (%s))"
-        data = [UserService.nextPk(self), f, r, p, c, m]
+        sql = "insert into sos_marksheet values((%s), (%s), (%s), (%s), (%s),(%s))"
+        data = [MarksheetService.nextPk(self), f, r, p, c, m]
         cursor = connection.cursor()
         cursor.execute(sql, data)
         connection.commit()
@@ -45,7 +45,7 @@ class UserService:
         connection.close()
 
     def delete(self, id):
-        sql = "delete from sos_user where id = (%s)"
+        sql = "delete from sos_marksheet where id = (%s)"
         data = [id]
         cursor = connection.cursor()
         cursor.execute(sql, data)
@@ -53,7 +53,7 @@ class UserService:
         connection.close()
 
     def auth(self, loginId, password):
-        sql = "select * from sos_user where loginId = (%s) and password = (%s)"
+        sql = "select * from sos_marksheet where loginId = (%s) and password = (%s)"
         data = [loginId, password]
         cursor = connection.cursor()
         cursor.execute(sql, data)
@@ -66,7 +66,7 @@ class UserService:
         return res
 
     def get(self, id):
-        sql = "select * from sos_user where id = (%s)"
+        sql = "select * from sos_marksheet where id = (%s)"
         data = [id]
         cursor = connection.cursor()
         cursor.execute(sql, data)
@@ -79,7 +79,7 @@ class UserService:
         return res
 
     def findByLogin(self, loginId):
-        sql = "select * from sos_user where loginId = (%s)"
+        sql = "select * from sos_marksheet where loginId = (%s)"
         data = [loginId]
         cursor = connection.cursor()
         cursor.execute(sql, data)
@@ -95,7 +95,7 @@ class UserService:
         fname = params.get("fullName", "")
         pageNo = params.get("pageNo", 0)
         pageSize = params.get("pageSize", 0)
-        sql = "select * from sos_user where 1=1"
+        sql = "select * from sos_marksheet where 1=1"
         if fname != "":
             sql += " and fullName like '" + fname + "%%' "
         if (pageSize > 0):

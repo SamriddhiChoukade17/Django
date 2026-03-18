@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from .service.marksheet import MarksheetService
 from .service.user_service import UserService
 
 
@@ -91,3 +92,45 @@ def test_list(request):
         {"id": 3, "firstName": "pqr", "lastName": "aaa", "email": "abc@gmail.com", "password": "12345"}
     ]
     return render(request, "testlist.html", {"list": list})
+
+
+def user_list(request):
+    params = {}
+    params['pageNo'] = 1
+    params['pageSize'] = 5
+
+    service = UserService()
+    list = service.search(params)
+
+    return render(request, 'userlist.html', {"list": list, 'pageNo': params['pageNo']})
+
+
+def marksheet(request):
+    message = ""
+    if request.method == "POST":
+        params = {}
+        params['fullName'] = request.POST.get('fullName')
+        params['rollNo'] = request.POST.get('rollNo')
+        params['physics'] = request.POST.get('physics')
+        params['chemistry'] = request.POST.get('chemistry')
+        params['maths'] = request.POST.get('maths')
+        service = MarksheetService()
+        service.add(params)
+        message = "Student Registered Successfully..!!"
+
+    return render(request,'marksheet.html', {'message': message})
+
+def add_user(request):
+    message = ""
+    if request.method == "POST":
+        params = {}
+        params['firstName'] = request.POST.get('firstName')
+        params['lastName'] = request.POST.get('lastName')
+        params['loginId'] = request.POST.get('loginId')
+        params['password'] = request.POST.get('password')
+        params['dob'] = request.POST.get('dob')
+        params['address'] = request.POST.get('address')
+        # service = UserService()
+        # service.add(params)
+        # message = "User Registered Successfully..!!"
+    return render(request, 'adduser.html', {'message': message})
