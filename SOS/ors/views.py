@@ -55,7 +55,7 @@ def user_signin(request):
     #         print(request.POST.get('loginId'))
     #         print(request.POST.get('password'))
     #     if request.POST.get('operation')=="signUp":
-    #         #ye niche wala "/signup/" bad me pag ko directly access krne ke liye h. link se directly access hoga and we don't be needing to type "*ors/signup"
+    #         #ye niche wala "/signup/" bad me page ko directly access krne ke liye h. link se directly access hoga and we don't be needing to type "*ors/signup"
     #         return redirect("/signup/")
     #         #return redirect("ors/signup/")
     #
@@ -99,10 +99,25 @@ def user_list(request):
     params['pageNo'] = 1
     params['pageSize'] = 5
 
+    if request.method == "POST":
+        if request.POST['operation'] == "next":
+            params['pageNo'] = int(request.POST['pageNo'])
+            params['pageNo'] += 1
+        if request.POST['operation'] == "previous":
+            params['pageNo'] = int(request.POST['pageNo'])
+            params['pageNo'] -= 1
+        if request.POST['operation'] == "search":
+            params['firstName'] = request.POST['firstName']
+
     service = UserService()
     list = service.search(params)
-
     return render(request, 'userlist.html', {"list": list, 'pageNo': params['pageNo']})
+
+
+def delete_user(request, id=0):
+    service = UserService()
+    service.delete(id)
+    return redirect("/ors/userlist/")
 
 
 def marksheet(request):
@@ -120,17 +135,48 @@ def marksheet(request):
 
     return render(request,'marksheet.html', {'message': message})
 
-def add_user(request):
-    message = ""
+# def add_user(request):
+#     message = ""
+#     if request.method == "POST":
+#         params = {}
+#         params['firstName'] = request.POST.get('firstName')
+#         params['lastName'] = request.POST.get('lastName')
+#         params['loginId'] = request.POST.get('loginId')
+#         params['password'] = request.POST.get('password')
+#         params['dob'] = request.POST.get('dob')
+#         params['address'] = request.POST.get('address')
+#         service = UserService()
+#         service.add(params)
+#         message = "User Registered Successfully..!!"
+#     return render(request, 'adduser.html', {'message': message})
+
+
+
+def user_save(request):
+    message = ''
+    params = {}
     if request.method == "POST":
-        params = {}
+
         params['firstName'] = request.POST.get('firstName')
         params['lastName'] = request.POST.get('lastName')
         params['loginId'] = request.POST.get('loginId')
         params['password'] = request.POST.get('password')
         params['dob'] = request.POST.get('dob')
         params['address'] = request.POST.get('address')
-        # service = UserService()
-        # service.add(params)
-        # message = "User Registered Successfully..!!"
-    return render(request, 'adduser.html', {'message': message})
+        service = UserService()
+        if request.POST['operation'] == "save":
+            service.add(params)
+            message = 'User Added Successfully'
+        if request.POST['operation'] == "update":
+            params['id'] = int(request.POST.get('id'))
+            service.update(params)
+            message = 'User Updated Successfully'
+    return render(request, 'user.html', {'form': params,'message': message})
+
+
+
+def edit_user(request, id=0):
+    service = UserService()
+    user_data = service.get(id)
+    user_data[0]['dob'] = user_data[0]['dob'].strftime('%Y-%m-%d')
+    return render(request, 'user.html', {'form': user_data[0]})
